@@ -10,8 +10,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route exact path="/" Component={Home} />
-          <Route exact path="/view/1" Component={View} />
-          <Route exact path="/edit/1" Component={Edit} />
+          <Route exact path="/view/:id" Component={View} />
+          <Route exact path="/edit/:id" Component={Edit} />
         </Routes>
       </BrowserRouter>
     </>

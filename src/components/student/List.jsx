@@ -17,29 +17,38 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { Link } from "react-router-dom";
-
+import axios from "axios";
+import { useState, useEffect } from "react";
 
 const useStyles = makeStyles({
-  headingColor: {
-    backgroundColor: deepPurple[400],
-    color: "white",
-  },
-  addstucolor: {
-    background: green[400],
-    color: "white",
-  },
+
   stuListColor: {
     background: orange[400],
     color: "white",
   },
   tableHeadCell: {
-    // background: orange[400],
     color: "white",
+    fontWeight: "bold",
+    fontSize: 16
   },
 });
 
 const List = () => {
     const classes = useStyles();
+    const [students, setStudents] = useState([]);
+    useEffect(()=>{
+getAllStudent();
+    }) 
+    async function getAllStudent(){
+      try{
+        const students = await axios.get("http://localhost:3333/students");
+        // console.log(students.data);
+        setStudents(students.data);
+      }catch(error){
+        console.log("something is wrong");
+      }
+    }
+
   return (
     <>
       <Box textAlign="center" mb={2} p={2} className={classes.stuListColor}>
@@ -62,31 +71,38 @@ const List = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow>
-              <TableCell align="center">1</TableCell>
-              <TableCell align="center">Sonam</TableCell>
-              <TableCell align="center">Sonam@example.com</TableCell>
-              <TableCell align="center"></TableCell>
-              <Tooltip title="view">
-                <IconButton>
-                  <Link to="/view/1">
-                    <VisibilityIcon color="primary" />
-                  </Link>
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Edit">
-                <IconButton>
-                  <Link to="/edit/1">
-                    <EditIcon />
-                  </Link>
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Delete">
-                <IconButton>
-                  <DeleteIcon color="secondary" />
-                </IconButton>
-              </Tooltip>
-            </TableRow>
+            {
+              students.map((student, i)=>{
+                return (
+                  <TableRow key={i}>
+                    <TableCell align="center">{i + 1}</TableCell>
+                    <TableCell align="center">{student.stuname}</TableCell>
+                    <TableCell align="center">{student.email}</TableCell>
+                    <TableCell align="center"></TableCell>
+                    <Tooltip title="view">
+                      <IconButton>
+                        <Link to={`/view/${student.id}`}>
+                          <VisibilityIcon color="primary" />
+                        </Link>
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Edit">
+                      <IconButton>
+                        <Link to={`/edit/${student.id}`}>
+                          <EditIcon />
+                        </Link>
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Delete">
+                      <IconButton>
+                        <DeleteIcon color="secondary" />
+                      </IconButton>
+                    </Tooltip>
+                  </TableRow>
+                );
+              })
+            }
+            
           </TableBody>
         </Table>
       </Box>

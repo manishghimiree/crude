@@ -12,12 +12,14 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { deepPurple, green, orange } from "@mui/material/colors";
+import {  orange } from "@mui/material/colors";
 import { makeStyles } from "@mui/styles";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const useStyles = makeStyles({
   stuListColor: {
@@ -33,7 +35,22 @@ const useStyles = makeStyles({
 
 const View = () => {
   const classes = useStyles();
-  return (
+  const { id } = useParams();
+  const [student, setStudent] = useState([]);
+useEffect(() => {
+  getStudent();
+});
+async function getStudent() {
+  try {
+    const student = await axios.get(`http://localhost:3333/students/${id}`);
+    // console.log(student.data);
+    setStudent(student.data);
+  } catch (error) {
+    console.log("something is wrong");
+  }
+}
+
+  return ( 
     <>
       <Box textAlign="center" mb={2} p={2} className={classes.stuListColor}>
         <Typography variant="h4">Student Detail</Typography>
@@ -55,9 +72,9 @@ const View = () => {
           </TableHead>
           <TableBody >
             <TableRow>
-              <TableCell align="center">1</TableCell>
-              <TableCell align="center">Sonam</TableCell>
-              <TableCell align="center">Sonam@example.com</TableCell>
+              <TableCell align="center">{student.id}</TableCell>
+              <TableCell align="center">{student.stuname}</TableCell>
+              <TableCell align="center">{student.email}</TableCell>
               <TableCell align="center" ></TableCell>
               <Tooltip title="view">
                 <IconButton>
