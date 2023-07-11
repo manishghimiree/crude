@@ -14,7 +14,21 @@
       "id": 3,
       "stuname": "Sumit",
       "email": "sumit@example.com"
+    },
+    {
+      "stuname": "manish",
+      "email": "manish@gmail.com",
+      "id": 4
+    },
+    {
+      "stuname": "manish",
+      "email": "manish@gmail.com",
+      "id": 5
+    },
+    {
+      "stuname": "MANISH ghimire",
+      "email": "manish@gmail.com",
+      "id": 6
     }
-   
   ]
 }

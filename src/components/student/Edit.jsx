@@ -2,8 +2,9 @@ import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { deepPurple, green, orange } from "@mui/material/colors";
 import { makeStyles } from "@mui/styles";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import List from "../student/List";
+import { useNavigate, useParams } from "react-router-dom";
 
 const useStyles = makeStyles({
   headingColor: {
@@ -18,6 +19,48 @@ const useStyles = makeStyles({
 
 const Edit = () => {
   const classes = useStyles();
+  const {id} = useParams();
+  const navigate = useNavigate();
+  const [student, setStudent] = useState({
+    stuname: "",
+    email: ""
+  });
+
+  useEffect (()=>{
+    async function getStudent(){
+      try{
+        const student = await axios.get(`http://localhost:3333/students/${id}`);
+        setStudent(student.data);
+      }
+      catch(error){
+        console.log("something is wrong");
+      }
+      }
+      getStudent();}
+      , [id] );
+       
+      function onTextFieldChange(e) {
+  setStudent({
+   ...student,
+   [e.target.name]: e.target.value
+  })
+ }
+
+ 
+async function onFormSubmit(e) {
+  e.preventDefault()
+  try {
+   await axios.put(`http://localhost:3333/students/${id}`, student)
+   navigate("/");
+  //  setStatus(true);
+  } catch (error) {
+   console.log("Something is Wrong");
+  }
+ }  
+ function handleClick() {
+   navigate("/");
+ }
+  
 
   return (
     <>
@@ -41,7 +84,7 @@ const Edit = () => {
                   id="id"
                   label="ID"
                   autoFocus
-                  value="1"
+                  value={id}
                   disabled
                 />
               </Grid>
@@ -55,7 +98,8 @@ const Edit = () => {
                   id="stuname"
                   label="Name"
                   autoFocus
-                  value="Sonam"
+                  value={student.stuname}
+                  onChange={(e) => onTextFieldChange(e)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -67,6 +111,8 @@ const Edit = () => {
                   fullWidth
                   id="email"
                   label="Email Address"
+                  value={student.email}
+                  onChange={(e) => onTextFieldChange(e)}
                 />
               </Grid>
             </Grid>
@@ -76,13 +122,14 @@ const Edit = () => {
                 variant="contained"
                 color="primary"
                 fullWidth
+                onClick={(e) => onFormSubmit(e)}
               >
                 Update
               </Button>
             </Box>
           </form>
           <Box m={3} textAlign="center">
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary" onClick={handleClick}>
               BAck to Home
             </Button>
           </Box>
