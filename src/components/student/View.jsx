@@ -17,7 +17,7 @@ import { makeStyles } from "@mui/styles";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams,  useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -37,10 +37,9 @@ const View = () => {
   const classes = useStyles();
   const { id } = useParams();
   const [student, setStudent] = useState([]);
-useEffect(() => {
-  getStudent();
-});
-async function getStudent() {
+const navigate = useNavigate();
+
+useEffect(() => { async function getStudent() {
   try {
     const student = await axios.get(`http://localhost:3333/students/${id}`);
     // console.log(student.data);
@@ -49,7 +48,13 @@ async function getStudent() {
     console.log("something is wrong");
   }
 }
+  getStudent();
+},[id]);
 
+function handleClick(){
+  navigate("/")
+
+}
   return ( 
     <>
       <Box textAlign="center" mb={2} p={2} className={classes.stuListColor}>
@@ -100,7 +105,7 @@ async function getStudent() {
         </Table>
       </TableContainer>
       <Box m={3} textAlign="center">
-        <Button variant="contained" color="primary">
+        <Button variant="contained" color="primary" onClick={handleClick}>
           Back to Home
         </Button>
       </Box>

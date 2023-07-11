@@ -37,17 +37,18 @@ const List = () => {
     const classes = useStyles();
     const [students, setStudents] = useState([]);
     useEffect(()=>{
+        async function getAllStudent() {
+          try {
+            const students = await axios.get("http://localhost:3333/students");
+            // console.log(students.data);
+            setStudents(students.data);
+          } catch (error) {
+            console.log("something is wrong");
+          }
+        }
 getAllStudent();
-    }) 
-    async function getAllStudent(){
-      try{
-        const students = await axios.get("http://localhost:3333/students");
-        // console.log(students.data);
-        setStudents(students.data);
-      }catch(error){
-        console.log("something is wrong");
-      }
-    }
+    },[]) 
+  
 
   return (
     <>

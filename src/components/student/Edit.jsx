@@ -24,7 +24,7 @@ const Edit = () => {
       <Box textAlign="center" className={classes.headingColor} p={2} mb={2}>
         <Typography variant="h2">React CRUD with API Call</Typography>
       </Box>
-      <Grid container justify="center" spacing={4}>
+      <Grid container textAlign="center" justify="center" spacing={4}>
         <Grid item md={6} xs={12}>
           <Box textAlign="center" p={2} className={classes.addstucolor} mb={2}>
             <Typography variant="h4">Edit Student</Typography>
