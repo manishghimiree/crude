@@ -19,48 +19,45 @@ const useStyles = makeStyles({
 
 const Edit = () => {
   const classes = useStyles();
-  const {id} = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
   const [student, setStudent] = useState({
     stuname: "",
-    email: ""
+    email: "",
   });
 
-  useEffect (()=>{
-    async function getStudent(){
-      try{
+  useEffect(() => {
+    async function getStudent() {
+      try {
         const student = await axios.get(`http://localhost:3333/students/${id}`);
         setStudent(student.data);
-      }
-      catch(error){
+      } catch (error) {
         console.log("something is wrong");
       }
-      }
-      getStudent();}
-      , [id] );
-       
-      function onTextFieldChange(e) {
-  setStudent({
-   ...student,
-   [e.target.name]: e.target.value
-  })
- }
+    }
+    getStudent();
+  }, [id]);
 
- 
-async function onFormSubmit(e) {
-  e.preventDefault()
-  try {
-   await axios.put(`http://localhost:3333/students/${id}`, student)
-   navigate("/");
-  //  setStatus(true);
-  } catch (error) {
-   console.log("Something is Wrong");
+  function onTextFieldChange(e) {
+    setStudent({
+      ...student,
+      [e.target.name]: e.target.value,
+    });
   }
- }  
- function handleClick() {
-   navigate("/");
- }
-  
+
+  async function onFormSubmit(e) {
+    e.preventDefault();
+    try {
+      await axios.put(`http://localhost:3333/students/${id}`, student);
+      navigate("/");
+      //  setStatus(true);
+    } catch (error) {
+      console.log("Something is Wrong");
+    }
+  }
+  function handleClick() {
+    navigate("/");
+  }
 
   return (
     <>
@@ -118,12 +115,13 @@ async function onFormSubmit(e) {
             </Grid>
             <Box m={3}>
               <Button
-                type="submit"
+                type="button"
                 variant="contained"
                 color="primary"
                 fullWidth
                 onClick={(e) => onFormSubmit(e)}
               >
+                
                 Update
               </Button>
             </Box>

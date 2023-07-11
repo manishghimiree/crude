@@ -11,7 +11,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { deepPurple, green, orange } from "@mui/material/colors";
+import {  orange } from "@mui/material/colors";
 import { makeStyles } from "@mui/styles";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@material-ui/icons/Edit";
@@ -49,6 +49,14 @@ const List = () => {
 getAllStudent();
     },[]) 
   
+   const handleDelete = async (id) => {
+     await axios.delete(`http://localhost:3333/students/${id}`);
+     var newstudent = students.filter((item) => {
+       // console.log(item);
+       return item.id !== id;
+     });
+     setStudents(newstudent);
+   };
 
   return (
     <>
@@ -95,7 +103,7 @@ getAllStudent();
                       </IconButton>
                     </Tooltip>
                     <Tooltip title="Delete">
-                      <IconButton>
+                      <IconButton onClick={() => handleDelete(student.id)}>
                         <DeleteIcon color="secondary" />
                       </IconButton>
                     </Tooltip>
